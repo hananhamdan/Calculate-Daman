@@ -1,59 +1,170 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة الضمان</title>
+    <title>حاسبة الراتب المستحق المتوقع بعد التقاعد</title>
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-image:linear-gradient( #96f7b3 , #70b3f1) ;
 
-            text-align: center;
+            background: linear-gradient(#96f7b3, #70b3f1);
+
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
             padding: 20px;
 
+            overflow-x: hidden;
         }
+
         .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            margin: auto;
-        }
-        input, button {
+            background-color: white;
+
             width: 100%;
-            padding: 10px;
-            margin: 10px 0;
+            max-width: 420px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+
+            color: #222;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+
+            color: #333;
+        }
+
+        input,
+        select,
+        button {
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 18px;
+
+            border-radius: 10px;
+            border: 1px solid #ccc;
+
             font-size: 16px;
         }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #28a745;
+        }
+
         button {
             background-color: #28a745;
-            color: rgb(238, 247, 248);
+
+            color: white;
+
             border: none;
+
             cursor: pointer;
+
+            transition: 0.3s;
         }
-        h2 {
-            margin-bottom: 20px;
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        h3 {
+            text-align: center;
+
+            margin-top: 15px;
+
+            line-height: 1.8;
+        }
+
+        #result {
+            color: #28a745;
+
+            font-weight: bold;
+
+            display: block;
+
+            margin-top: 10px;
+
+            font-size: 22px;
+        }
+
+        @media screen and (max-width: 480px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                padding: 20px;
+                border-radius: 16px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            input,
+            select,
+            button {
+                font-size: 15px;
+                padding: 12px;
+            }
+
+            #result {
+                font-size: 20px;
+            }
         }
     </style>
 </head>
+
 <body>
+
     <div class="container">
-        <h2>حاسبة الضمان</h2>
+
+        <h2>حاسبة الراتب المتوقع بعد التقاعد</h2>
+
         <label for="salary1">الراتب الأساسي للسنة الأولى</label>
-        <input type="number" id="salary1" placeholder="أدخل الراتب للسنة الأولى" />
+        <input type="number" id="salary1" placeholder="أدخل الراتب للسنة الأولى">
 
         <label for="salary2">الراتب الأساسي للسنة الثانية</label>
-        <input type="number" id="salary2" placeholder="أدخل الراتب للسنة الثانية" />
+        <input type="number" id="salary2" placeholder="أدخل الراتب للسنة الثانية">
 
         <label for="salary3">الراتب الأساسي للسنة الثالثة</label>
-        <input type="number" id="salary3" placeholder="أدخل الراتب للسنة الثالثة" />
+        <input type="number" id="salary3" placeholder="أدخل الراتب للسنة الثالثة">
 
         <label for="years">عدد سنوات الخدمة</label>
-        <input type="number" id="years" placeholder="أدخل عدد سنوات الخدمة" />
+        <input type="number" id="years" placeholder="أدخل عدد سنوات الخدمة">
 
         <label for="education">المؤهل العلمي</label>
+
         <select id="education">
             <option value="0">دبلوم</option>
             <option value="1">بكالوريوس</option>
@@ -61,44 +172,64 @@
             <option value="3">دكتوراه</option>
         </select>
 
-        <button onclick="calculate()">احتساب الراتب التقاعدي</button>
+        <button onclick="calculate()">
+            احتساب الراتب التقاعدي
+        </button>
 
-        <h3>الراتب التقاعدي المستحق: <span id="result">--</span></h3>
+        <h3>
+            الراتب التقاعدي المستحق:
+            <span id="result">--</span>
+        </h3>
+
     </div>
 
     <script>
+
         function calculate() {
-            var salary1 = parseFloat(document.getElementById("salary1").value);
-            var salary2 = parseFloat(document.getElementById("salary2").value);
-            var salary3 = parseFloat(document.getElementById("salary3").value);
-            var years = parseFloat(document.getElementById("years").value);
-            var education = parseInt(document.getElementById("education").value);
 
-            // حساب المتوسط
-            var totalSalary = (salary1 * 12 + salary2 * 12 + salary3 * 12);
-            var averageSalary = totalSalary / 36;
+            let salary1 = parseFloat(document.getElementById("salary1").value) || 0;
 
-            // حساب الراتب التقاعدي بناءً على سنوات الخدمة والنسبة
-            var retirementSalary = averageSalary * years * 0.025;
+            let salary2 = parseFloat(document.getElementById("salary2").value) || 0;
 
-            // إضافة النسبة بناءً على المؤهل العلمي
-            var percentageIncrease = 0;
+            let salary3 = parseFloat(document.getElementById("salary3").value) || 0;
+
+            let years = parseFloat(document.getElementById("years").value) || 0;
+
+            let education = parseInt(document.getElementById("education").value);
+
+            // متوسط الرواتب
+            let totalSalary = (salary1 + salary2 + salary3) / 3;
+
+            // الراتب التقاعدي الأساسي
+            let retirementSalary = totalSalary * years * 0.025;
+
+            // نسبة الزيادة
+            let percentageIncrease = 0;
+
             if (education === 1) {
-                percentageIncrease = 4; // بكالوريوس
-            } else if (education === 2) {
-                percentageIncrease = 6; // ماجستير
-            } else if (education === 3) {
-                percentageIncrease = 8; // دكتوراه
+                percentageIncrease = 4;
             }
 
-            // حساب الزيادة بناءً على النسبة المئوية
-            var increase = retirementSalary * (percentageIncrease / 100);
+            else if (education === 2) {
+                percentageIncrease = 6;
+            }
 
-            // حساب الراتب النهائي
-            var finalSalary = retirementSalary + increase;
+            else if (education === 3) {
+                percentageIncrease = 8;
+            }
 
-            document.getElementById("result").innerText = finalSalary.toFixed(2);
+            // الراتب النهائي
+            let finalSalary =
+                retirementSalary +
+                (retirementSalary * percentageIncrease / 100);
+
+            document.getElementById("result").innerText =
+                finalSalary.toFixed(2) + " د.أ";
+
         }
+
     </script>
+
 </body>
+
 </html>
